@@ -1,2 +1,2 @@
-# h1 Heading Main
-# Main sketch that includes all files.
+#Main
+Includes all of files into a single sketch.
