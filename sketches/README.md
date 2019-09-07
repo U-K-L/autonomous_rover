@@ -1,2 +1,2 @@
 # Main
-Includes all of files into a single sketch.
+Includes all files into a single sketch.
