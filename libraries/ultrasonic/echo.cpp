@@ -14,9 +14,6 @@ void echo :: loop() {
 	pinMode(receivePin, INPUT);
 	//Converts speed to distance
 	distance = (duration*0.5f)*0.0343642611683849f; //Approximate value for speed of sound.
-	Serial.println(distance);
-	delay(250);
-
 }
 void echo :: pulsate(float length) {
 	digitalWrite(trigPin, LOW);

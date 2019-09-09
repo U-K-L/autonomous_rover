@@ -1,7 +1,6 @@
 #pragma once
 //Created by Noah Williams on 9/7/2019.
 //Echo location functions used for finding objects via sound.
-#include "echo.h"
 #include <Arduino.h>
 using namespace std;
 class echo {
