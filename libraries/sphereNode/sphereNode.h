@@ -16,8 +16,9 @@ public:
 	};
 
 	float distance(vector3D d) {
-		vector3D dv = position - d;
-		return dv.mag();
+		vector3D pos = position;
+
+		return (pos-d).mag();
 	};
 	//Checks if rover is bounded inside sphere.
 	bool bounded(vector3D a, float r) {

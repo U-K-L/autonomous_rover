@@ -79,8 +79,7 @@ public:
 	};
 
 	String serialize() {
-		String value = String(5.698, 6);
-		value = (String)"" + String(x, 6) + "," + String(y, 6) + "," + String(z, 6) + "|";
+		String value = (String)"" + String(x, 6) + "," + String(y, 6) + "," + String(z, 6) + "|";
 		return value;
 	}
 };
