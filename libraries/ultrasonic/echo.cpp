@@ -22,3 +22,6 @@ void echo :: pulsate(float length) {
 	delayMicroseconds(length*2);
 	digitalWrite(trigPin, LOW);
 }
+String echo::serialize() {
+	return (String)"d_e"+String(distance, 6);
+}

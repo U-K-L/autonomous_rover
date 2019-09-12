@@ -12,5 +12,6 @@ public:
 	void setup();
 	void loop();
 	void pulsate(float speed);
+	String echo::serialize();
 };
 
