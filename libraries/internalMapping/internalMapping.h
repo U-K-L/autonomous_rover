@@ -11,5 +11,5 @@ public:
 	void object(vector3D point);
 	void unbound();
 	int locator(vector3D point);
-	String internalMapping::serialize();
+	String serialize();
 };
