@@ -7,12 +7,11 @@
 #include <internalMapping.h>
 #include <Wire.h>
 
+
 #include <SparkFun_VL6180X.h>
 #define VL6180X_ADDRESS 0x29
-
 VL6180xIdentification identification;
 VL6180x sensor(VL6180X_ADDRESS);
-
 
 
 int success = 8; //Pin that lights up when reach target.
@@ -21,13 +20,16 @@ vector3D point = vector3D(3.1415926,2,3);
 internalMapping internalMap;
 //-----
 void setup() {
-  Serial.begin (9600);
-  Wire.begin(); //Start I2C library
-  sensor.getIdentification(&identification); // Retrieve manufacture info from device memory
+ 
 
-   if(sensor.VL6180xInit() != 0){
+  Serial.begin (9600);
+  //(sensor)->getIdentification(&identification); // Retrieve manufacture info from device memory
+
+/*
+   if((sensor)->VL6180xInit() != 0){
     Serial.println("FAILED TO INITALIZE"); //Initialize device and check for errors
   }; 
+  */
 
   internalMap.r = 10; //How large a single sphere is.
 
@@ -38,9 +40,8 @@ void setup() {
   Serial.println(internalMap.serialize());
   pinMode(success, OUTPUT);
 
-  sensor.VL6180xDefautSettings(); //Load default settings to get started.
-  
-  delay(1000); // delay 1s
+ // (sensor)->VL6180xDefautSettings(); //Load default settings to get started.
+ 
   
 }
 
@@ -49,8 +50,10 @@ void loop() {
   echo.loop();
   Serial.println(internalMap.serialize());
   Serial.println(echo.serialize());
-  Serial.print(sensor.getDistance() +" "); 
+ // Serial.print((sensor)->getDistance() +" "); 
   goalReached();
+  int * ptr;
+    Serial.println(VL6180X_ADDRESS);
 }
 
 void goalReached(){
