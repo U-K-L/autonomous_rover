@@ -8,7 +8,11 @@ public:
 	File file;
 	void setup();
 	void loop();
-	void writeFile();
+	void writeFile(char *str);
 	void closeFile();
-	void openFile();
+	void openFile(char *str);
+	void saveToFile(char*str);
+	void saveToFileln(char*str);
+	void saveToFile(float);
+	void saveToFileln(float);
 };
