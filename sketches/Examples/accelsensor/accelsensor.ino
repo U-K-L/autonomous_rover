@@ -4,7 +4,7 @@
 #include <save.h>
 #include <SPI.h>
 #include <SD.h>
-
+#include <matrix.h>
 
 #include <save.h>
 #include <button.h>
@@ -12,6 +12,10 @@ save save;
 button button;
 /* Assign a unique ID to this sensor at the same time */
 Adafruit_LSM303_Accel_Unified accel = Adafruit_LSM303_Accel_Unified(54321);
+
+matrix<double, (int)3, (int)3> matrix2;
+matrix<double, (int)3, (int)3> matrix3;
+matrix<double, (int)3,(int)3> m;
 
 void displaySensorDetails(void)
 {
@@ -32,6 +36,21 @@ void displaySensorDetails(void)
 
 void setup(void)
 {
+  
+  double a[3][3] = {1,0,0,
+                    0,1,0,
+                    0,0,1};
+                    
+  double b[3][3] = {1,2,3,
+                    4,5,6,
+                    7,8,9};
+                    
+  matrix3.setup(b);
+  matrix2 = matrix<double, (int)3,(int)3>(a);
+  
+  m = matrix<double, (int)3,(int)3>(a);
+  
+  m = matrix2*matrix3;
   save.setup();
   button.setup(2);
   save.writeFile("acel.txt");
@@ -73,6 +92,7 @@ void loop(void)
   Serial.print("X Raw: "); Serial.print(accel.raw.x); Serial.print("  ");
   Serial.print("Y Raw: "); Serial.print(accel.raw.y); Serial.print("  ");
   Serial.print("Z Raw: "); Serial.print(accel.raw.z); Serial.println("");
+  //matrix2.serialize(matrix2.mat);
 
 /*
  * Saves data to file.
@@ -81,6 +101,8 @@ void loop(void)
   save.saveToFile("Y: "); save.saveToFile(event.acceleration.y); save.saveToFile("  ");
   save.saveToFile("Z: "); save.saveToFile(event.acceleration.z); save.saveToFile("  ");save.saveToFileln("m/s^2 ");
   save.loop();
+  //m.serialize();
+  matrix2.serialize();
   /* Delay before the next sample */
   delay(500);
 

@@ -54,7 +54,9 @@ void loop(void)
   Serial.print("X: "); Serial.print(event.magnetic.x); Serial.print("  ");
   Serial.print("Y: "); Serial.print(event.magnetic.y); Serial.print("  ");
   Serial.print("Z: "); Serial.print(event.magnetic.z); Serial.print("  ");Serial.println("uT");
-
+  double angle = atan2(event.magnetic.y, event.magnetic.x);
+  angle = angle*(180/PI);
+  Serial.println(angle);
   /* Note: You can also get the raw (non unified values) for */
   /* the last data sample as follows. The .getEvent call populates */
   /* the raw values used below. */
