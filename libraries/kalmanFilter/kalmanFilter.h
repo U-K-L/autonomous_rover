@@ -1,5 +1,6 @@
 #include "orientation.h"
 #include "RoverGPS.h"
+#include "Arduino.h"
 
 class kalmanFilter {
 	public:

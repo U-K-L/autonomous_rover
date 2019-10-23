@@ -30,8 +30,8 @@ void RoverGPS::loop() {
 		timer = millis(); // reset the timer
 		if (gps.fix) {
 			serialize();
-			position.x = gps.latitude;
-			position.y = gps.longitude;
+			position.x() = gps.latitude;
+			position.y() = gps.longitude;
 			speed = gps.speed;
 		}
 	}

@@ -31,16 +31,16 @@ void orientation::loop() {
 void orientation::computeVelocity() {
 	sensors_event_t acceleration;
 	//Use Euler integration to compute velocity.
-	velocity.x += acceleration.acceleration.x;
-	velocity.y += acceleration.acceleration.y;
-	velocity.z += acceleration.acceleration.z;
+	velocity.x() += acceleration.acceleration.x;
+	velocity.y() += acceleration.acceleration.y;
+	velocity.z() += acceleration.acceleration.z;
 }
 
 void orientation::computePosition() {
 	//Use Euler integration to compute position.
-	position.x += velocity.x;
-	position.y += velocity.y;
-	position.z += velocity.z;
+	position.x() += velocity.x();
+	position.y() += velocity.y();
+	position.z() += velocity.z();
 }
 
 String orientation::serialize() {
