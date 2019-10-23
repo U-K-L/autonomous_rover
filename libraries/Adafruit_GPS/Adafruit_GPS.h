@@ -101,6 +101,7 @@
 class Adafruit_GPS {
  public:
   void begin(uint32_t baud);
+  Adafruit_GPS() {};
 
 #if (defined(__AVR__) || defined(ESP8266)) && defined(USE_SW_SERIAL)
   Adafruit_GPS(SoftwareSerial *ser); // Constructor when using SoftwareSerial
