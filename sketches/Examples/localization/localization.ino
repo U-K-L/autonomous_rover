@@ -10,5 +10,8 @@ void setup() {
 void loop() {
   // put your main code here, to run repeatedly:
   kalman.loop();
-  delay(100);
+  Serial.println(String(kalman.averageCalibration.x(), 6));
+  Serial.println(String(kalman.averageCalibration.y(), 6));
+  Serial.println(String(kalman.averageCalibration.z(), 6));
+  delay(60);
 }

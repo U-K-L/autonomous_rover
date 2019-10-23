@@ -13,14 +13,17 @@
 // - VECTOR_GRAVITY       - m/s^2
 class orientation {
 public:
-	Adafruit_BNO055 bno = Adafruit_BNO055(-1, 0x28);
+	Adafruit_BNO055 bno = Adafruit_BNO055(55, 0x28);
 	imu::Quaternion quaternion; //Gets quaternion orientation of sensor.
 	imu::Vector<3> position = imu::Vector<3>(0, 0, 0);
 	imu::Vector<3> velocity = imu::Vector<3>(0, 0, 0);
 	imu::Vector<3> acceleration = imu::Vector<3>(0, 0, 0);
+	double xf, yf, zf;
 	orientation() {};
 	void setup();
 	void loop();
+	void calibrate();
+	void computeAcceleration(sensors_event_t * event);
 	void computeVelocity();
 	void computePosition();
 	String serialize();
