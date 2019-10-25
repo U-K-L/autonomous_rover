@@ -20,7 +20,7 @@ public:
 	imu::Vector<3> velocity = imu::Vector<3>(0, 0, 0);
 	imu::Vector<3> acceleration = imu::Vector<3>(0, 0, 0);
 	imu::Vector<3> averageCalibration = imu::Vector<3>(0, 0, 0);
-	double filterStrength = 12.25; //Filter calibration Strength.
+	double filterStrength = 8.25; //Filter calibration Strength.
 	double xf, yf, zf;
 	orientation() {};
 	void setup();
