@@ -35,14 +35,11 @@ void orientation::calibrate() {
 	sensors_event_t event;
 	bno.getEvent(&event, Adafruit_BNO055::VECTOR_LINEARACCEL);
 	double x, y, z;
-	double k = 0.9;
 	x = event.acceleration.x;
 	y = event.acceleration.y;
 	z = event.acceleration.z;
-
-	xf = k * xf + (1.0 - k) * x;
-	yf = k * yf + (1.0 - k) * y;
-	zf = k * zf + (1.0 - k) * z;
+	
+	IIRFilter(x, y, z);
 
 	acceleration.x() = xf;
 	acceleration.y() = yf;
@@ -51,13 +48,26 @@ void orientation::calibrate() {
 
 void orientation::computeAcceleration(sensors_event_t * event) {
 	double x, y, z;
+	acceleration.x() = 0;
+	acceleration.y() = 0;
+	acceleration.z() = 0;
+
 	x = event->acceleration.x;
 	y = event->acceleration.y;
 	z = event->acceleration.z;
+	IIRFilter(x, y, z);
 
-	acceleration.x() = x;
-	acceleration.y() = y;
-	acceleration.z() = z;
+	if( abs(x) >= abs(( averageCalibration.x()* filterStrength )))
+		acceleration.x() = xf;
+
+
+	if (abs(y) >= abs((averageCalibration.y()* (filterStrength*0.8))))
+		acceleration.y() = yf;
+
+
+	if (abs(z) >= abs((averageCalibration.z()* (filterStrength*0.2))))
+		acceleration.z() = zf;
+
 }
 
 void orientation::computeVelocity() {
@@ -74,6 +84,14 @@ void orientation::computePosition() {
 	position.z() += velocity.z();
 }
 
+//Infinite Impulse Response
+void orientation::IIRFilter(double x, double y, double z) {
+	double k = 0.9;
+	xf = k * xf + (1.0 - k) * x;
+	yf = k * yf + (1.0 - k) * y;
+	zf = k * zf + (1.0 - k) * z;
+}
+
 String orientation::serialize() {
 	double x = acceleration.x();
 	double y = acceleration.y();
@@ -85,6 +103,6 @@ String orientation::serialize() {
 	z = quaternion.z();
 	double w = quaternion.w();
 	value = (String)"roverQ" + String(x, 6) + "," + String(y, 6) + "," + String(z, 6) + "," + String(w, 6);
-	//Serial.println(value);
+	Serial.println(value);
 	return value;
 }

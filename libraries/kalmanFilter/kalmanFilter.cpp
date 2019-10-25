@@ -15,16 +15,22 @@ void kalmanFilter::loop() {
 
 void kalmanFilter::calibrate() {
 	int i = 0;
-	for (; i < 1000; i++) {
+	for (; i < 700; i++) {
 		orient.calibrate();
 		roverGPS.loop();
 
-		averageCalibration.x() += orient.acceleration.x();
-		averageCalibration.y() += orient.acceleration.y();
-		averageCalibration.z() += orient.acceleration.z();
-		delay(60);
+		averageCalibration.x() += abs(orient.acceleration.x());
+		averageCalibration.y() += abs(orient.acceleration.y());
+		averageCalibration.z() += abs(orient.acceleration.z());
+		delay(20);
 	}
 	averageCalibration = averageCalibration*(1.0 / i);
+	orient.xf = 0;
+	orient.yf = 0;
+	orient.zf = 0;
+	orient.averageCalibration.x() = averageCalibration.x();
+	orient.averageCalibration.y() = averageCalibration.y();
+	orient.averageCalibration.z() = averageCalibration.z();
 }
 
 void kalmanFilter::debug() {
@@ -46,5 +52,8 @@ void kalmanFilter::debug() {
 	Serial.println(orient.quaternion.z());
 	// RAW ACCELERATION
 	Serial.println(" ACCELERATION DATA ");
+	Serial.println(String(averageCalibration.x(), 6));
+	Serial.println(String(averageCalibration.y(), 6));
+	Serial.println(String(averageCalibration.z(), 6));
 
 }

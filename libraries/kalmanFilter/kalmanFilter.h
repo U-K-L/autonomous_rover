@@ -6,7 +6,6 @@ class kalmanFilter {
 	public:
 		imu::Vector<2> stateTrans = imu::Vector<2>(0, 0); //State transition matrix. Matrix that holds our initial and desired state. Position/Velocity.
 		imu::Vector<3> averageCalibration = imu::Vector<3>(0, 0, 0);
-		float calibrationStrength = 0.08;
 		orientation orient;
 		RoverGPS roverGPS;
 
