@@ -30,5 +30,6 @@ public:
 	void computeVelocity();
 	void computePosition();
 	void IIRFilter(double x, double y, double z);
+	void trapezoidalIntegration(imu::Vector<3> f, imu::Vector<3> delta);
 	String serialize();
 };

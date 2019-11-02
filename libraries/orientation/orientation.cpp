@@ -84,11 +84,12 @@ void orientation::computePosition() {
 	position.z() += velocity.z();
 }
 
-void orientation::trapezoidalIntegration(Vector<3> f, Vector<3> delta) {
+void orientation::trapezoidalIntegration(imu::Vector<3> f, imu::Vector<3> delta) {
 
 
 
 }
+
 //Infinite Impulse Response
 void orientation::IIRFilter(double x, double y, double z) {
 	double k = 0.9;
