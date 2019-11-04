@@ -3,7 +3,7 @@
 void kalmanFilter::setup() {
 	roverGPS.setup();
 	orient.setup();
-	orient.callibrateCompass();
+	//orient.callibrateCompass(); //Turned off for now!!!
 	calibrate();
 }
 
