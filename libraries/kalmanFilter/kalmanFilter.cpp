@@ -37,6 +37,7 @@ void kalmanFilter::calibrate() {
 void kalmanFilter::debug() {
 	//Prints the GPS data. Absolute position.
 	Serial.println(orient.heading);
+	Serial.println(orient.incline);
 	Serial.println(" GPS DATA ");
 	Serial.println(roverGPS.position.x());
 	Serial.println(roverGPS.position.y());
