@@ -22,10 +22,11 @@ void orientation::setup(){
 
 void orientation::loop() {
 	quaternion = bno.getQuat();
-	sensors_event_t accel;
+	sensors_event_t accel, comp;
 	bno.getEvent(&accel, Adafruit_BNO055::VECTOR_LINEARACCEL);
+	bno.getEvent(&comp, Adafruit_BNO055::VECTOR_MAGNETOMETER);
 
-
+	computeCompass(&comp);
 	computeAcceleration(&accel);
 	computeVelocity();
 	computePosition();
@@ -44,6 +45,30 @@ void orientation::calibrate() {
 	acceleration.x() = xf;
 	acceleration.y() = yf;
 	acceleration.z() = zf;
+}
+
+void orientation::callibrateCompass() {
+	uint8_t system, gyro, accel, mag = 0;
+	while (system != 3)
+	{
+		bno.getCalibration(&system, &gyro, &accel, &mag);
+		Serial.print("CALIBRATION: Sys=");
+		Serial.print(system, DEC);
+		Serial.print(" Gyro=");
+		Serial.print(gyro, DEC);
+		Serial.print(" Accel=");
+		Serial.print(accel, DEC);
+		Serial.print(" Mag=");
+		Serial.println(mag, DEC);
+		delay(100);
+	}
+	Serial.println(""); Serial.println("Calibrated");
+	delay(2000);
+}
+
+void orientation::computeCompass(sensors_event_t * event) {
+	double angle = quaternion.toEuler().x()*(180 / PI);
+	heading = 180 + angle;
 }
 
 void orientation::computeAcceleration(sensors_event_t * event) {
