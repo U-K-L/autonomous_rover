@@ -3,13 +3,21 @@
 void kalmanFilter::setup() {
 	roverGPS.setup();
 	orient.setup();
-	//orient.callibrateCompass(); //Turned off for now!!!
+	orient.callibrateCompass();
 	calibrate();
 }
 
 void kalmanFilter::loop() {
 	orient.loop();
 	roverGPS.loop();
+	roverGPS.position.x() = 0;
+	roverGPS.position.y() = 0;
+	roverGPS.destination.x() = 0;
+	roverGPS.destination.y() = 0;
+
+	roverGPS.calculateBearing(roverGPS.position.x(), roverGPS.position.y(),
+							  roverGPS.destination.x(), roverGPS.destination.y() );
+
 	//orient.serialize();
 	debug();
 }
@@ -36,11 +44,16 @@ void kalmanFilter::calibrate() {
 
 void kalmanFilter::debug() {
 	//Prints the GPS data. Absolute position.
-	Serial.println(orient.heading);
-	Serial.println(orient.incline);
 	Serial.println(" GPS DATA ");
 	Serial.println(roverGPS.position.x());
 	Serial.println(roverGPS.position.y());
+	Serial.println(" DESTINATION ");
+	Serial.println(roverGPS.destination.x());
+	Serial.println(roverGPS.destination.y());
+	Serial.println(" Bearing, Heading, Incline ");
+	Serial.println(orient.heading);
+	Serial.println(orient.incline);
+	Serial.println(roverGPS.bearing);
 	Serial.println("GPS SPEED: ");
 	Serial.println(roverGPS.speed);
 	//Prints the accelerometer data.

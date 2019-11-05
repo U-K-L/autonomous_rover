@@ -10,14 +10,18 @@
 class RoverGPS {
 public:
 	Adafruit_GPS gps;
-	imu::Vector<3> destination;
-	uint32_t timer = millis();
+	imu::Vector<2> destination = imu::Vector<2>(0, 0);
 	imu::Vector<2> position = imu::Vector<2>(0, 0);
+	uint32_t timer = millis();
 	double speed;
+	double EarthRadius = 6371; //Mean earth radius Kilometers.
 
 	RoverGPS(){};
 	void setup();
 	void loop();
 	void serialize();
+	double Haversine(imu::Vector<3> f);
+	double calculateBearing(double latStart, double lonStart, double latDest, double lonDest); //Calculates Forwards azimuth
+	double bearing;
 
 };

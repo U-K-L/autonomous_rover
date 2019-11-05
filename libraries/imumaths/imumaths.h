@@ -24,6 +24,7 @@
 #include "vector.h"
 #include "matrix.h"
 #include "quaternion.h"
+#include "conversions.h"
 
 
 #endif

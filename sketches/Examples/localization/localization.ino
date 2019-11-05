@@ -1,4 +1,3 @@
-
 #include <kalmanFilter.h>
 kalmanFilter kalman;
 void setup() {
