@@ -17,9 +17,12 @@ public:
 	Adafruit_BNO055 bno = Adafruit_BNO055(55, 0x28);
 	imu::Quaternion quaternion; //Gets quaternion orientation of sensor.
 	imu::Vector<3> position = imu::Vector<3>(0, 0, 0);
+	imu::Vector<3> compass = imu::Vector<3>(0, 0, 0);
 	imu::Vector<3> velocity = imu::Vector<3>(0, 0, 0);
 	imu::Vector<3> acceleration = imu::Vector<3>(0, 0, 0);
 	imu::Vector<3> averageCalibration = imu::Vector<3>(0, 0, 0);
+	double heading = 0.0f;//Gets the heading for the rover.
+	double incline = 0.0f;//Gets the incline of the rover from 180 to -180.
 	double filterStrength = 8.25; //Filter calibration Strength.
 	double xf, yf, zf;
 	orientation() {};
@@ -30,5 +33,8 @@ public:
 	void computeVelocity();
 	void computePosition();
 	void IIRFilter(double x, double y, double z);
+	void trapezoidalIntegration(imu::Vector<3> f, imu::Vector<3> delta);
+	void callibrateCompass();
+	void computeCompass(sensors_event_t *event);
 	String serialize();
 };

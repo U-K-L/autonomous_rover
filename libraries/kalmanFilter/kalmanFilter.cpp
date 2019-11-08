@@ -3,19 +3,28 @@
 void kalmanFilter::setup() {
 	roverGPS.setup();
 	orient.setup();
+	orient.callibrateCompass();
 	calibrate();
 }
 
 void kalmanFilter::loop() {
 	orient.loop();
 	roverGPS.loop();
-	orient.serialize();
-	//debug();
+	roverGPS.position.x() = 0;
+	roverGPS.position.y() = 0;
+	roverGPS.destination.x() = 0;
+	roverGPS.destination.y() = 0;
+
+	roverGPS.calculateBearing(roverGPS.position.x(), roverGPS.position.y(),
+							  roverGPS.destination.x(), roverGPS.destination.y() );
+
+	//orient.serialize();
+	debug();
 }
 
 void kalmanFilter::calibrate() {
 	int i = 0;
-	for (; i < 700; i++) {
+	for (; i < 250; i++) {
 		orient.calibrate();
 		roverGPS.loop();
 
@@ -38,9 +47,17 @@ void kalmanFilter::debug() {
 	Serial.println(" GPS DATA ");
 	Serial.println(roverGPS.position.x());
 	Serial.println(roverGPS.position.y());
+	Serial.println(" DESTINATION ");
+	Serial.println(roverGPS.destination.x());
+	Serial.println(roverGPS.destination.y());
+	Serial.println(" Bearing, Heading, Incline ");
+	Serial.println(orient.heading);
+	Serial.println(orient.incline);
+	Serial.println(roverGPS.bearing);
 	Serial.println("GPS SPEED: ");
 	Serial.println(roverGPS.speed);
 	//Prints the accelerometer data.
+	/*
 	Serial.println(" POSITION DATA ");
 	Serial.println(orient.position.x());
 	Serial.println(orient.position.y());
@@ -55,5 +72,5 @@ void kalmanFilter::debug() {
 	Serial.println(String(averageCalibration.x(), 6));
 	Serial.println(String(averageCalibration.y(), 6));
 	Serial.println(String(averageCalibration.z(), 6));
-
+	*/
 }

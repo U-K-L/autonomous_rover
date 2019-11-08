@@ -30,11 +30,27 @@ void RoverGPS::loop() {
 		timer = millis(); // reset the timer
 		if (gps.fix) {
 			serialize();
-			position.x() = gps.latitude;
-			position.y() = gps.longitude;
+			//position.x() = gps.latitude;
+			//position.y() = gps.longitude;
 			speed = gps.speed;
 		}
+
+		calculateBearing(position.x(), position.y(), destination.x(), destination.y()); //Recalculates every 2 seconds.
 	}
+
+	
+}
+
+double RoverGPS::calculateBearing(double latStart, double lonStart, double latDest, double lonDest) {
+	latStart = latStart * (PI / 180);
+	latDest = latDest * (PI / 180);
+	lonStart = lonStart * (PI / 180);
+	lonDest = lonDest * (PI / 180);
+	double y = sinf(lonDest - lonStart)*cosf(latDest);
+	double x = cosf(latStart)*sinf(latDest) - sinf(latStart)*cosf(latDest)*cosf(lonDest-lonStart);
+	double bear = atan2(y, x)*(180 / PI);
+	bearing = fmodf((360 + bear), 360.00); //ensures that degree is between 0 and 360 just like heading.
+	return bearing;
 }
 
 void RoverGPS::serialize() {
