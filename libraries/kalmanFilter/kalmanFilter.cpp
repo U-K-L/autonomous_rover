@@ -1,7 +1,7 @@
 #include "kalmanFilter.h"
 
 void kalmanFilter::setup() {
-	roverGPS.setup();
+	//roverGPS.setup();
 	orient.setup();
 	//orient.callibrateCompass();
 	//calibrate();

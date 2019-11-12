@@ -14,6 +14,7 @@ State machine;
 DriveTrain drive;
 
 void setup() {
+  Serial.begin(9600);
   drive.setup();
   reset();
   calibration();
@@ -27,17 +28,17 @@ void setup() {
 
 void loop() {
   kalman.loop();
-  
-  
+  Serial.println("HI");
   double tolerance = kalman.tolerance;//Let's play with different values.
   double heading = kalman.orient.heading; //Kalman filters it for you.
   double bearing = kalman.roverGPS.bearing; //But you can just call roverGPS (no filter).
 
   Serial.print("differenc: ");
   Serial.println(abs(heading-bearing));
+  /*
   switch(machine) {
   case ACTIVE:
-  
+  /*
   if (abs(heading-bearing) < tolerance){
     machine = UNACTIVE;}
   else{
@@ -45,9 +46,9 @@ void loop() {
   }
   break;
   case UNACTIVE:
-  reset();
   break;
   case TURN:
+  /*
   turn(40);
   if (abs(heading-bearing) < tolerance){
     machine = UNACTIVE;}
@@ -58,6 +59,8 @@ void loop() {
   case MOVE:
   break;  
   }
+  */
+  delay(100);
 }
 
 void calibration() {
@@ -84,6 +87,7 @@ void calibration() {
 }
 
 void turn(int speed) {
+  
   // Front
   drive.moveTo(23, 50);
   drive.moveTo(29, 70);
