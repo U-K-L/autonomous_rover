@@ -128,7 +128,7 @@ String orientation::serialize() {
 	double y = acceleration.y();
 	double z = acceleration.z();
 	String value = (String)"roverP" + String(x, 6) + "," + String(y, 6) + "," + String(z, 6);
-	Serial.println(value);
+	//Serial.println(value);
 	x = quaternion.x();
 	y = quaternion.y();
 	z = quaternion.z();

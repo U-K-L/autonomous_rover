@@ -107,7 +107,7 @@ bool Adafruit_BNO055::begin(adafruit_bno055_opmode_t mode) {
   delay(50);
 
   /* Set to normal power mode */
-  write8(BNO055_PWR_MODE_ADDR, POWER_MODE_NORMAL);
+  write8(BNO055_PWR_MODE_ADDR, POWER_MODE_LOWPOWER);
   delay(10);
 
   write8(BNO055_PAGE_ID_ADDR, 0);

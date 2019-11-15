@@ -20,6 +20,7 @@ class coroutine{
     }
 
     void reset(){
+        
         if(readyState == true){
             readyState = false;
             startTime = millis();
