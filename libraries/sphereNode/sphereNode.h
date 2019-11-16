@@ -7,7 +7,7 @@ using namespace std;
 class sphereNode {
 public:
 	vector3D position;
-	int index; //index where it exits in navigation mesh.
+	int index; //index where it exists in navigation mesh.
 	bool traversable = true; //Is there an object here?
 	sphereNode() {
 	};

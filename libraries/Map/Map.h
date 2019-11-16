@@ -3,8 +3,8 @@
 #include <imumaths>
 class Map
 {
+	int r;
+	sphereNode map;
 public:
-	void setup();
-	void loop();
-
+	Map(int radius, int sphereradius);
 };
