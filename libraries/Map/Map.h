@@ -4,9 +4,13 @@
 #include <math.h>
 class Map
 {
+	float radius;
 	int r;
-	sphereNode map;
+	sphereNode[] map;
+	int round(float i);
 public:
 	Map(int radius, int sphereradius);
-	flush();
+	void flush();
+	void update(float distance, float angle);
+	bool read(int index);
 };
