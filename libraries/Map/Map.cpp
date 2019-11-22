@@ -34,6 +34,7 @@ void flush()
 }
 
 void update(float distance, float angle)
+//Distance should be in meters, angle should be in degrees
 {
 	angle = angle * (PI / 180);
 	float xcoord = distance * cos(angle);
@@ -41,7 +42,8 @@ void update(float distance, float angle)
 	int i = round(xcoord / (2 * radius));
 	int j = round(ycoord / (2 * radius));
 	int l = (int)sqrt(r);
-	map[(j * l) + i].traversable = false;
+	int c = (r / 2) + 1;
+	map[(j * l) + i + c].traversable = false;
 }
 
 bool read(int index)
