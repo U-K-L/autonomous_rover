@@ -1,16 +1,20 @@
 #pragma once
 #include <Arduino.h>
-#include <imumaths>
+#include <imumaths.h>
 #include <math.h>
+#include <sphereNode.h>
+#include <Vector3D.h>
 class Map
 {
+	// var
+private:
 	float radius;
-	int r;
-	sphereNode[] map;
-	int round(float i);
+	int n;
+	sphereNode map[25];
 public:
-	Map(int radius, int sphereradius);
+	Map(int radius, float sphereradius);
 	void flush();
 	void update(float distance, float angle);
 	bool read(int index);
+	bool read(vector3D v);
 };
