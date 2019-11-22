@@ -14,11 +14,11 @@ void kalmanFilter::loop() {
 	//Y is longitude.
 	//Latitude is East/West.
 	//Longitude is North/South.
-	roverGPS.position.y() = 40.175998;
-	roverGPS.position.x() = -75.275722;
+	roverGPS.position.y() = 40.176335;
+	roverGPS.position.x() =   -75.275412;
 	
-	roverGPS.destination.y() = 40.176541;
-	roverGPS.destination.x() = -75.276714;
+	roverGPS.destination.y() = 40.176548;
+	roverGPS.destination.x() =  -75.276715;
 
 	roverGPS.calculateBearing(roverGPS.position.x(), roverGPS.position.y(),
 							  roverGPS.destination.x(), roverGPS.destination.y() );

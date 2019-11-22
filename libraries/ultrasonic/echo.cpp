@@ -14,6 +14,15 @@ void echo :: loop() {
 	pinMode(receivePin, INPUT);
 	//Converts speed to distance
 	distance = (duration*0.5f)*0.0343642611683849f; //Approximate value for speed of sound.
+	if(sampleIndex >= sampleLength){
+		sampleIndex = 0;
+		float sampleAvg = 0;
+		for(int i = 0; i < sampleLength; i++){
+			sampleAvg += (duration*0.5f)*0.0343642611683849f;
+		}
+		//distance = sampleAvg/sampleLength;
+	}
+	sampleIndex++;
 }
 void echo :: pulsate(float length) {
 	digitalWrite(trigPin, LOW);
