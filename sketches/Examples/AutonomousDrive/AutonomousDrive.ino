@@ -79,7 +79,7 @@ void loop() {
   }
  delay(10);
 
-  if(echo.distance <= 100){
+  if(echo.distance <= 80){
     machine = BACKUP;
   }
 
