@@ -1,7 +1,4 @@
-#include <HCSRO4.h>
-#include <LSM303DLHC.h>
-#include <Sensor.h>
-
+#include <echo.h>
 #include <DriveTrain.h>
 
 #include <kalmanFilter.h>
@@ -28,7 +25,7 @@ enum State {
 DriveTrain drive;
 State roboState;
 Action action;
-HCSRO4 frontDetector;
+echo frontDetector;
 
 long elapsedTime;
 long currentTime;
@@ -39,7 +36,7 @@ void setup() {
   Serial.begin(9600);
   drive.setup();
   stopRover();
-    kalman.setup();
+  kalman.setup();
 
   frontDetector.setup();
   //driveTestRoutine();
@@ -176,14 +173,14 @@ void loop() {
 
 void moveForward() {
   // left side
-  drive.spinAt(25, 40);
-  drive.spinAt(21, 40);
-  drive.spinAt(20, 40);
+  drive.spinAt(25, 90);
+  drive.spinAt(21, 90);
+  drive.spinAt(20, 90);
 
   // right side
-  drive.spinAt(27, -40);
-  drive.spinAt(22, -40);
-  drive.spinAt(28, -40);
+  drive.spinAt(27, -90);
+  drive.spinAt(22, -90);
+  drive.spinAt(28, -90);
   }
 
 
@@ -214,11 +211,11 @@ void stopRover() {
 
 // value return is 1 yes 0 no 2 move backwards
 int canMoveForward() {
-  if(frontDetector.distance < 40 && frontDetector.distance > 0) {
+  if(frontDetector.distance < 100 && frontDetector.distance > 0) {
     return 2;
   }else {
     
-  if(frontDetector.distance > 50) {
+  if(frontDetector.distance > 100) {
     return 1;
     }
   }

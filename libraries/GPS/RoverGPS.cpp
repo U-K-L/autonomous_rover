@@ -48,8 +48,13 @@ double RoverGPS::calculateBearing(double latStart, double lonStart, double latDe
 	lonDest = toRadians(lonDest);
 	double y = sinf(lonDest - lonStart)*cosf(latDest);
 	double x = cosf(latStart)*sinf(latDest) - sinf(latStart)*cosf(latDest)*cosf(lonDest-lonStart);
+<<<<<<< HEAD
 	double bear = toDegrees(atan2(y, x));
 	bearing = fmodf((360 + bear), 360.00); //ensures that degree is between 0 and 360 just like heading.
+=======
+	double bear = atan2(y, x)*(180 / PI);
+	bearing = fmodf((360 + bear + correction), 360.00); //ensures that degree is between 0 and 360 just like heading.
+>>>>>>> 3dac729a8d2578dada0b841643ac15fb82d10ec5
 	return bearing;
 }
 
