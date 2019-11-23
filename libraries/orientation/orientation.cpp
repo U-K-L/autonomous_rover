@@ -67,8 +67,8 @@ void orientation::callibrateCompass() {
 }
 
 void orientation::computeCompass(sensors_event_t * event) {
-	heading = 180 + quaternion.toEuler().x()*(180 / PI);
-	incline = -quaternion.toEuler().z()*(180 / PI);
+	heading = 180 + toDegrees(quaternion.toEuler().x());
+	incline = -toDegrees(quaternion.toEuler().z());
 }
 
 void orientation::computeAcceleration(sensors_event_t * event) {
