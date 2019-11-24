@@ -11,8 +11,8 @@ Map::Map(int nodes, float sphereradius)
 	float angle = (2 * PI) / n;
 	for (int i = 0; i < n; i++)
 	{
-		map[i].position.x = distance * cos(angle);
-		map[i].position.y = distance * sin(angle);
+		map[i].position.x = distance * cos(angle * i);
+		map[i].position.y = distance * sin(angle * i);
 		map[i].position.z = 0;
 	}
 }
