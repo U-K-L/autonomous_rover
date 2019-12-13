@@ -4,19 +4,15 @@ void kalmanFilter::setup() {
 	//roverGPS.setup();
 	orient.setup();
 	//orient.callibrateCompass();
-	//calibrate();
+	calibrate();
 }
 
 void kalmanFilter::loop() {
 	orient.loop();
-<<<<<<< HEAD
+	/*
 	roverGPS.loop();
-	//roverGPS.position.x() = 0;
-	//roverGPS.position.y() = 0;
 	roverGPS.destination.x() = 0;
 	roverGPS.destination.y() = 0;
-=======
-	//roverGPS.loop();
 	//X is latitude.
 	//Y is longitude.
 	//Latitude is East/West.
@@ -26,7 +22,6 @@ void kalmanFilter::loop() {
 	
 	roverGPS.destination.y() = 40.176548;
 	roverGPS.destination.x() =  -75.276715;
->>>>>>> 3dac729a8d2578dada0b841643ac15fb82d10ec5
 
 	roverGPS.calculateBearing(roverGPS.position.x(), roverGPS.position.y(),
 							  roverGPS.destination.x(), roverGPS.destination.y() );
@@ -35,7 +30,9 @@ void kalmanFilter::loop() {
 								roverGPS.destination.x(), roverGPS.destination.y() );
 
 	//orient.serialize();
-	//debug();
+	debug();
+	*/
+	orient.serialize();
 }
 
 void kalmanFilter::calibrate() {

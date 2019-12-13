@@ -9,6 +9,8 @@ class Map
 	// var
 private:
 	float radius;
+	float circleradius;
+	float distance;
 	int n;
 	sphereNode map[25];
 public:
@@ -17,4 +19,6 @@ public:
 	void update(float distance, float angle);
 	bool read(int index);
 	bool read(vector3D v);
+	String serialize();
+	String Sizeserialize();
 };
