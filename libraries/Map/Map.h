@@ -12,7 +12,7 @@ private:
 	float circleradius;
 	float distance;
 	int n;
-	sphereNode map[25];
+	sphereNode map[5];
 public:
 	Map(int radius, float sphereradius);
 	void flush();

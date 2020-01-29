@@ -1,5 +1,5 @@
 #include <Map.h>
-Map maps = Map(25, 0.5);;
+Map maps = Map(5, 2);
 void setup() {
   // put your setup code here, to run once:
   Serial.begin(9600);
@@ -9,7 +9,7 @@ void loop() {
   // put your main code here, to run repeatedly:
   maps.update(0.5, 90);
   maps.update(0.5, 0);
-  for (int i = 0; i < 25; i++)
+  for (int i = 0; i < 5; i++)
   {
     Serial.print(maps.read(i));
     delay(10);
