@@ -12,15 +12,16 @@ public:
 	Adafruit_GPS gps;
 	imu::Vector<2> destination = imu::Vector<2>(0, 0);
 	imu::Vector<2> position = imu::Vector<2>(0, 0);
+	double distance; //Distance in meters between two points.
 	uint32_t timer = millis();
 	double speed;
 	double EarthRadius = 6371; //Mean earth radius Kilometers.
-
+	double correction = 95.87;
 	RoverGPS(){};
 	void setup();
 	void loop();
 	void serialize();
-	double Haversine(imu::Vector<3> f);
+	double calculateDistance(double latStart, double lonStart, double latDest, double lonDest); //Uses haversine formula to calculate distance.
 	double calculateBearing(double latStart, double lonStart, double latDest, double lonDest); //Calculates Forwards azimuth
 	double bearing;
 

@@ -24,12 +24,12 @@ void orientation::loop() {
 	quaternion = bno.getQuat();
 	sensors_event_t accel, comp;
 	bno.getEvent(&accel, Adafruit_BNO055::VECTOR_LINEARACCEL);
-	bno.getEvent(&comp, Adafruit_BNO055::VECTOR_MAGNETOMETER);
+	//bno.getEvent(&comp, Adafruit_BNO055::VECTOR_MAGNETOMETER);
 
-	computeCompass(&comp);
+	//computeCompass(&comp);
 	computeAcceleration(&accel);
-	computeVelocity();
-	computePosition();
+	//computeVelocity();
+	//computePosition();
 }
 
 void orientation::calibrate() {
@@ -67,8 +67,8 @@ void orientation::callibrateCompass() {
 }
 
 void orientation::computeCompass(sensors_event_t * event) {
-	heading = 180 + quaternion.toEuler().x()*(180 / PI);
-	incline = -quaternion.toEuler().z()*(180 / PI);
+	heading = 180 + toDegrees(quaternion.toEuler().x());
+	incline = -toDegrees(quaternion.toEuler().z());
 }
 
 void orientation::computeAcceleration(sensors_event_t * event) {
@@ -128,7 +128,7 @@ String orientation::serialize() {
 	double y = acceleration.y();
 	double z = acceleration.z();
 	String value = (String)"roverP" + String(x, 6) + "," + String(y, 6) + "," + String(z, 6);
-	//Serial.println(value);
+	Serial.println(value);
 	x = quaternion.x();
 	y = quaternion.y();
 	z = quaternion.z();
