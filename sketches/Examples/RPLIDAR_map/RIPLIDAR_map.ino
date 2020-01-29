@@ -40,11 +40,11 @@
  
 // This sketch code is based on the RPLIDAR driver library provided by RoboPeak
 #include "RPLidar.h"
-#include <SoftwareSerial.h>
+//#include <SoftwareSerial.h>
 #include <Map.h>
 
 // You need to create an driver instance 
-int nodes = 25;
+int nodes = 5;
 float radius = 0.5;
 Map maps = Map(nodes, radius);
 RPLidar lidar;
@@ -68,21 +68,24 @@ void loop() {
     bool  startBit = lidar.getCurrentPoint().startBit; //whether this point is belong to a new scan
     byte  quality  = lidar.getCurrentPoint().quality; //quality of the current measurement
     distance /= 1000;
+    
     //perform data processing here... 
     if (startBit) 
     {
-      
-      for (int i = 0; i < 25; i++)
+      Serial.print("[");
+      for (int i = 0; i < nodes; i++)
       {
         Serial.print(maps.read(i));
         //delay(10);
       }
+      Serial.print("]");
       Serial.println();
       maps.flush();
       delay(100);
     }
     //Serial.println(startBit);
-    maps.update(distance, angle);
+     maps.update(distance, angle);
+    //Serial.println(distance);
     //delay(100);
     
     
