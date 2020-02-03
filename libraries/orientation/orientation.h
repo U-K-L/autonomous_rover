@@ -32,6 +32,7 @@ public:
 	void computeAcceleration(sensors_event_t * event);
 	void computeVelocity();
 	void computePosition();
+	float computeMagnitude();
 	void IIRFilter(double x, double y, double z);
 	void trapezoidalIntegration(imu::Vector<3> f, imu::Vector<3> delta);
 	void callibrateCompass();

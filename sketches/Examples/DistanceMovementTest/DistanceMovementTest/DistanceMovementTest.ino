@@ -1,6 +1,7 @@
 #include <DriveTrain.h> //Deals with spinning the wheels of the rover.
 #include "coroutine.h"
-
+#include <kalmanFilter.h>
+kalmanFilter kalman;
 DriveTrain drive;
 coroutine driveCoroutine;
 
@@ -8,18 +9,19 @@ void setup() {
   // put your setup code here, to run once:
   driveCoroutine.setup(1000);
   drive.setup();
-  reset();
-  forwards(100);
+  kalman.setup();
+
   
 }
 
 void loop() {
+  kalman.loop();
+  
+  
   // put your main code here, to run repeatedly:
 
-  Rightspin();
-  delay(13000);
-  Leftspin();
-  delay(13000);
+  forwards(100);
+  delay(10);
 }
 
 void forwards(int speed) {

@@ -9,17 +9,12 @@ void setup() {
   driveCoroutine.setup(1000);
   drive.setup();
   reset();
-  forwards(100);
+  forwards(50);
   
 }
 
 void loop() {
   // put your main code here, to run repeatedly:
-
-  Rightspin();
-  delay(13000);
-  Leftspin();
-  delay(13000);
 }
 
 void forwards(int speed) {
@@ -34,27 +29,6 @@ void forwards(int speed) {
   drive.spinAt(28, -speed);
 }
 
-void Rightspin() {
-
-  // Front
-  drive.moveTo(23, 50);
-  drive.moveTo(29, 50);
-
-  // Back
-  drive.moveTo(24, -50);
-  drive.moveTo(26, -50);
-}
-
-void Leftspin() {
-
-  // Front
-  drive.moveTo(23, -50);
-  drive.moveTo(29, -50);
-
-  // Back
-  drive.moveTo(24, 50);
-  drive.moveTo(26, 50);
-}
 
 void reset() {
   /* Turn right */
