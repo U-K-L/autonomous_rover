@@ -28,8 +28,9 @@ void orientation::loop() {
 
 	//computeCompass(&comp);
 	computeAcceleration(&accel);
-	computeVelocity();
-	computePosition();
+	trapezoidalIntegration();
+	//computeVelocity();
+	//computePosition();
 	//computeMagnitude();
 }
 
@@ -97,10 +98,14 @@ void orientation::computeAcceleration(sensors_event_t * event) {
 }
 
 void orientation::computeVelocity() {
+
+	
+	/*
 	//Use Euler integration to compute velocity.
 	velocity.x() += acceleration.x();
 	velocity.y() += acceleration.y();
 	velocity.z() += acceleration.z();
+	*/
 }
 
 void orientation::computePosition() {
@@ -130,8 +135,31 @@ float orientation::computeMagnitude() {
 
 }
 
-void orientation::trapezoidalIntegration(imu::Vector<3> f, imu::Vector<3> delta) {
+void orientation::trapezoidalIntegration() {
 
+	float tolerance = 0.03;
+
+	if (abs(velocity.y()) < tolerance) {
+		velocity.y() = 0;
+	}
+	Serial.println(velocity.y());
+	//float basepositionx = Math.abs(position.x());
+
+	float basevelocityx = abs(velocity.y());
+	//float basevelocityy = velocity.y();
+	//float basevelocityx = velocity.z();
+
+	float baseaccelerationx = acceleration.y();
+	//float baseaccelerationy = acceleration.y();
+	//float baseaccelerationz = acceleration.z();
+
+	float accelerationx = acceleration.y();
+	//float accelerationy = acceleration.y();
+	//float accelerationz = acceleration.z();
+	
+	velocity.y() = basevelocityy + baseaccelerationy + ((accelerationy - baseaccelerationy) / 2);
+	//velocity.y() = basevelocityx + baseaccelerationx + (accelerationx - baseaccelerationx) >> 1;
+	//velocity.z() = basevelocityx + baseaccelerationx + (accelerationx - baseaccelerationx) >> 1;
 
 
 }

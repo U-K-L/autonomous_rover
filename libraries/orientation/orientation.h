@@ -34,7 +34,7 @@ public:
 	void computePosition();
 	float computeMagnitude();
 	void IIRFilter(double x, double y, double z);
-	void trapezoidalIntegration(imu::Vector<3> f, imu::Vector<3> delta);
+	void trapezoidalIntegration();
 	void callibrateCompass();
 	void computeCompass(sensors_event_t *event);
 	String serialize();

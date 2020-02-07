@@ -10,6 +10,7 @@ void setup() {
   driveCoroutine.setup(1000);
   drive.setup();
   kalman.setup();
+  Serial.begin(9600);
 
   
 }
@@ -20,7 +21,7 @@ void loop() {
   
   // put your main code here, to run repeatedly:
 
-  forwards(100);
+  forwards(0);
   delay(10);
 }
 
