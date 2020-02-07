@@ -29,8 +29,8 @@ void orientation::loop() {
 	//computeCompass(&comp);
 	computeAcceleration(&accel);
 	computeVelocity();
-	//computePosition();
-	computeMagnitude();
+	computePosition();
+	//computeMagnitude();
 }
 
 void orientation::calibrate() {
@@ -106,7 +106,6 @@ void orientation::computeVelocity() {
 void orientation::computePosition() {
 	//Use Euler integration to compute position.
 	float tol = 0.0001f;
-	//velocity -= Mathf.Abs(1000 * target.z * Time.deltaTime);
 	position.x() += velocity.x();
 	position.y() += velocity.y();
 	position.z() += velocity.z();
