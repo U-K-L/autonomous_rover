@@ -32,7 +32,8 @@ void kalmanFilter::loop() {
 	//orient.serialize();
 	debug();
 	*/
-	orient.serialize();
+	//orient.serialize();
+	//Serial.println(orient.computeMagnitude());
 }
 
 void kalmanFilter::calibrate() {

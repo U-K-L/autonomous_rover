@@ -55,7 +55,7 @@ class DriveTrain {
 		// Revolutions per minute
 		int positionRead(int);
 		
-		// voltqage reading
+		// voltage reading
 		int getVoltage(int);
 		
 	private:
