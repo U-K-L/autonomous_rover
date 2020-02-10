@@ -6,13 +6,13 @@ Map::Map(int nodes, float sphereradius)
 	n = nodes;
 	radius = sphereradius;
 
-	float circleradius = n * radius;
-	float distance = circleradius / (2 * PI);
+	circleradius = n * radius;
+	distance = circleradius / (2 * PI);
 	float angle = (2 * PI) / n;
 	for (int i = 0; i < n; i++)
 	{
-		map[i].position.x = distance * cos(angle);
-		map[i].position.y = distance * sin(angle);
+		map[i].position.x = distance * cos(angle * i);
+		map[i].position.y = distance * sin(angle * i);
 		map[i].position.z = 0;
 	}
 }
@@ -54,4 +54,18 @@ bool Map::read(vector3D v)
 			return (map[i].traversable);
 		}
 	}
+}
+
+String Map::serialize() {
+	String mapData = "";
+	//nodes = new sphereNode[nodesAmount];
+	//delete[] nodes;
+	for (int i = 0; i < n; i++) {
+		mapData += map[i].position.serialize();
+	}
+	return (String)"m_p"+ mapData;
+}
+
+String Map::Sizeserialize() {
+	return (String)"n_n" + n;
 }

@@ -24,12 +24,17 @@ void orientation::loop() {
 	quaternion = bno.getQuat();
 	sensors_event_t accel, comp;
 	bno.getEvent(&accel, Adafruit_BNO055::VECTOR_LINEARACCEL);
-	bno.getEvent(&comp, Adafruit_BNO055::VECTOR_MAGNETOMETER);
+	//bno.getEvent(&comp, Adafruit_BNO055::VECTOR_MAGNETOMETER);
 
-	computeCompass(&comp);
+	//computeCompass(&comp);
+	ax = acceleration.x();
+	ay = acceleration.y();
+	az = acceleration.z();
 	computeAcceleration(&accel);
-	computeVelocity();
-	computePosition();
+	trapezoidalIntegration();
+	//computeVelocity();
+	//computePosition();
+	//computeMagnitude();
 }
 
 void orientation::calibrate() {
@@ -67,8 +72,8 @@ void orientation::callibrateCompass() {
 }
 
 void orientation::computeCompass(sensors_event_t * event) {
-	heading = 180 + quaternion.toEuler().x()*(180 / PI);
-	incline = -quaternion.toEuler().z()*(180 / PI);
+	heading = 180 + toDegrees(quaternion.toEuler().x());
+	incline = -toDegrees(quaternion.toEuler().z());
 }
 
 void orientation::computeAcceleration(sensors_event_t * event) {
@@ -96,22 +101,92 @@ void orientation::computeAcceleration(sensors_event_t * event) {
 }
 
 void orientation::computeVelocity() {
+
+	
+	/*
 	//Use Euler integration to compute velocity.
 	velocity.x() += acceleration.x();
 	velocity.y() += acceleration.y();
 	velocity.z() += acceleration.z();
+	*/
 }
 
 void orientation::computePosition() {
 	//Use Euler integration to compute position.
+	float tol = 0.0001f;
 	position.x() += velocity.x();
 	position.y() += velocity.y();
 	position.z() += velocity.z();
 }
 
-void orientation::trapezoidalIntegration(imu::Vector<3> f, imu::Vector<3> delta) {
+
+float orientation::computeMagnitude() {
+	//Use Euler integration to compute position.
 
 
+	position.x() += velocity.x();
+	position.y() += velocity.y();
+	position.z() += velocity.z();
+	float x = position.x();
+	float y = position.y();
+	float z = position.z();
+
+	float magnitude = 0;
+
+	magnitude = sqrt(x*x + y*y + z*z);
+	return magnitude;
+
+}
+
+void orientation::trapezoidalIntegration() {
+
+	float tolerance = 0.03;
+
+	if (abs(acceleration.x()) < tolerance) {
+		velocity.x() = 0;
+	}
+	if (abs(acceleration.y()) < tolerance) {
+		velocity.y() = 0;
+	}
+	if (abs(acceleration.z()) < tolerance) {
+		velocity.z() = 0;
+	}
+	Serial.println(velocity.x());
+	Serial.println(position.x());
+	Serial.println(velocity.y());
+	Serial.println(position.y());
+	Serial.println(velocity.z());
+	Serial.println(position.z());
+	Serial.println();
+	
+	
+	float basepositionx = position.x();
+	float basepositiony = position.y();
+	float basepositionz = position.z();
+
+
+
+	float basevelocityx = abs(velocity.x());
+	float basevelocityy = abs(velocity.y());
+	float basevelocityz = abs(velocity.z());
+
+	float baseaccelerationx = ax;
+	float baseaccelerationy = ay;
+	float baseaccelerationz = az;
+
+	float accelerationx = acceleration.x();
+	float accelerationy = acceleration.y();
+	float accelerationz = acceleration.z();
+
+	
+	
+	velocity.x() = basevelocityx + baseaccelerationx + ((accelerationx - baseaccelerationx) / 2);
+	velocity.y() = basevelocityy + baseaccelerationy + ((accelerationy - baseaccelerationy) / 2);
+	velocity.z() = basevelocityz + baseaccelerationz + ((accelerationz - baseaccelerationz) / 2);
+
+	position.x() = basepositionx + basevelocityx + ((abs(velocity.x()) - basevelocityx) / 2);
+	position.y() = basepositiony + basevelocityy + ((abs(velocity.y()) - basevelocityy) / 2);
+	position.z() = basepositionz + basevelocityz + ((abs(velocity.z()) - basevelocityz) / 2);
 
 }
 
@@ -128,7 +203,7 @@ String orientation::serialize() {
 	double y = acceleration.y();
 	double z = acceleration.z();
 	String value = (String)"roverP" + String(x, 6) + "," + String(y, 6) + "," + String(z, 6);
-	//Serial.println(value);
+	Serial.println(value);
 	x = quaternion.x();
 	y = quaternion.y();
 	z = quaternion.z();

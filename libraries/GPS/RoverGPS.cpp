@@ -30,8 +30,8 @@ void RoverGPS::loop() {
 		timer = millis(); // reset the timer
 		if (gps.fix) {
 			serialize();
-			//position.x() = gps.latitude;
-			//position.y() = gps.longitude;
+			position.x() = gps.latitude;
+			position.y() = gps.longitude;
 			speed = gps.speed;
 		}
 
@@ -42,15 +42,34 @@ void RoverGPS::loop() {
 }
 
 double RoverGPS::calculateBearing(double latStart, double lonStart, double latDest, double lonDest) {
-	latStart = latStart * (PI / 180);
-	latDest = latDest * (PI / 180);
-	lonStart = lonStart * (PI / 180);
-	lonDest = lonDest * (PI / 180);
+	latStart = toRadians(latStart);
+	latDest = toRadians(latDest);
+	lonStart = toRadians(lonStart);
+	lonDest = toRadians(lonDest);
 	double y = sinf(lonDest - lonStart)*cosf(latDest);
 	double x = cosf(latStart)*sinf(latDest) - sinf(latStart)*cosf(latDest)*cosf(lonDest-lonStart);
-	double bear = atan2(y, x)*(180 / PI);
+	double bear = toDegrees(atan2(y, x));
 	bearing = fmodf((360 + bear + correction), 360.00); //ensures that degree is between 0 and 360 just like heading.
 	return bearing;
+}
+
+double RoverGPS::calculateDistance(double latStart, double lonStart, double latDest, double lonDest) {
+	latStart = toRadians(latStart);
+	latDest = toRadians(latDest);
+	lonStart = toRadians(lonStart);
+	lonDest = toRadians(lonDest);
+
+	double deltaLat = toRadians(latDest - latStart);
+	double deltaLon = toRadians(lonDest - lonStart);
+
+	double alpha = sinf(deltaLat / 2)*sinf(deltaLat / 2)+
+				   cosf(latStart)*cosf(latDest)*
+				   sinf(deltaLon / 2)*sinf(deltaLon / 2);
+
+	double c = 2 * asinf(sqrtf(alpha));
+	distance = (EarthRadius) * c;
+	distance *= 100000;
+	return distance;
 }
 
 void RoverGPS::serialize() {

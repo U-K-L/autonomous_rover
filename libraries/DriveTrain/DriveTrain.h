@@ -36,17 +36,6 @@ class Wheel {
 	State _msState;
 };
 
-class DriveTrain {
-	public:
-	DriveTrain() {}
-	DriveTrainLayout layout;
-	Wheel wheels[10];
-	void setup();
-	void forward(float);
-	void backward(float);
-	void stop();
-	void turn(float);
-};
 
 
 #endif

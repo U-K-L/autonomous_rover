@@ -25,6 +25,7 @@ public:
 	double incline = 0.0f;//Gets the incline of the rover from 180 to -180.
 	double filterStrength = 8.25; //Filter calibration Strength.
 	double xf, yf, zf;
+	float ax, ay, az;
 	orientation() {};
 	void setup();
 	void loop();
@@ -32,8 +33,9 @@ public:
 	void computeAcceleration(sensors_event_t * event);
 	void computeVelocity();
 	void computePosition();
+	float computeMagnitude();
 	void IIRFilter(double x, double y, double z);
-	void trapezoidalIntegration(imu::Vector<3> f, imu::Vector<3> delta);
+	void trapezoidalIntegration();
 	void callibrateCompass();
 	void computeCompass(sensors_event_t *event);
 	String serialize();
