@@ -27,6 +27,9 @@ void orientation::loop() {
 	//bno.getEvent(&comp, Adafruit_BNO055::VECTOR_MAGNETOMETER);
 
 	//computeCompass(&comp);
+	ax = acceleration.x();
+	ay = acceleration.y();
+	az = acceleration.z();
 	computeAcceleration(&accel);
 	trapezoidalIntegration();
 	//computeVelocity();
@@ -139,28 +142,51 @@ void orientation::trapezoidalIntegration() {
 
 	float tolerance = 0.03;
 
-	if (abs(velocity.y()) < tolerance) {
+	if (abs(acceleration.x()) < tolerance) {
+		velocity.x() = 0;
+	}
+	if (abs(acceleration.y()) < tolerance) {
 		velocity.y() = 0;
 	}
+	if (abs(acceleration.z()) < tolerance) {
+		velocity.z() = 0;
+	}
+	Serial.println(velocity.x());
+	Serial.println(position.x());
 	Serial.println(velocity.y());
-	//float basepositionx = Math.abs(position.x());
-
-	float basevelocityx = abs(velocity.y());
-	//float basevelocityy = velocity.y();
-	//float basevelocityx = velocity.z();
-
-	float baseaccelerationx = acceleration.y();
-	//float baseaccelerationy = acceleration.y();
-	//float baseaccelerationz = acceleration.z();
-
-	float accelerationx = acceleration.y();
-	//float accelerationy = acceleration.y();
-	//float accelerationz = acceleration.z();
+	Serial.println(position.y());
+	Serial.println(velocity.z());
+	Serial.println(position.z());
+	Serial.println();
 	
-	velocity.y() = basevelocityy + baseaccelerationy + ((accelerationy - baseaccelerationy) / 2);
-	//velocity.y() = basevelocityx + baseaccelerationx + (accelerationx - baseaccelerationx) >> 1;
-	//velocity.z() = basevelocityx + baseaccelerationx + (accelerationx - baseaccelerationx) >> 1;
+	
+	float basepositionx = position.x();
+	float basepositiony = position.y();
+	float basepositionz = position.z();
 
+
+
+	float basevelocityx = abs(velocity.x());
+	float basevelocityy = abs(velocity.y());
+	float basevelocityz = abs(velocity.z());
+
+	float baseaccelerationx = ax;
+	float baseaccelerationy = ay;
+	float baseaccelerationz = az;
+
+	float accelerationx = acceleration.x();
+	float accelerationy = acceleration.y();
+	float accelerationz = acceleration.z();
+
+	
+	
+	velocity.x() = basevelocityx + baseaccelerationx + ((accelerationx - baseaccelerationx) / 2);
+	velocity.y() = basevelocityy + baseaccelerationy + ((accelerationy - baseaccelerationy) / 2);
+	velocity.z() = basevelocityz + baseaccelerationz + ((accelerationz - baseaccelerationz) / 2);
+
+	position.x() = basepositionx + basevelocityx + ((abs(velocity.x()) - basevelocityx) / 2);
+	position.y() = basepositiony + basevelocityy + ((abs(velocity.y()) - basevelocityy) / 2);
+	position.z() = basepositionz + basevelocityz + ((abs(velocity.z()) - basevelocityz) / 2);
 
 }
 

@@ -11,17 +11,18 @@ void setup() {
   drive.setup();
   kalman.setup();
   Serial.begin(9600);
-
-  
+  delay(1000);
+  reset();
 }
 
 void loop() {
   kalman.loop();
-  
+  //reset();
   
   // put your main code here, to run repeatedly:
 
-  forwards(0);
+  forwards(100);
+  Rightspin();
   delay(10);
 }
 

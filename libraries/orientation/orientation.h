@@ -25,6 +25,7 @@ public:
 	double incline = 0.0f;//Gets the incline of the rover from 180 to -180.
 	double filterStrength = 8.25; //Filter calibration Strength.
 	double xf, yf, zf;
+	float ax, ay, az;
 	orientation() {};
 	void setup();
 	void loop();
