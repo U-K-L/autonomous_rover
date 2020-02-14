@@ -170,13 +170,13 @@ void orientation::trapezoidalIntegration() {
 	float basevelocityy = abs(velocity.y());
 	float basevelocityz = abs(velocity.z());
 
-	float baseaccelerationx = ax;
-	float baseaccelerationy = ay;
-	float baseaccelerationz = az;
+	float baseaccelerationx = ax / 100.0;
+	float baseaccelerationy = ay / 100.0;
+	float baseaccelerationz = az / 100.0;
 
-	float accelerationx = acceleration.x();
-	float accelerationy = acceleration.y();
-	float accelerationz = acceleration.z();
+	float accelerationx = acceleration.x() / 100.0;
+	float accelerationy = acceleration.y() / 100.0;
+	float accelerationz = acceleration.z() / 100.0;
 
 	
 	
