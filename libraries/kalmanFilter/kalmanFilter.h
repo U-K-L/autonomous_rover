@@ -15,4 +15,12 @@ class kalmanFilter {
 		void setup();
 		void debug();
 		void calibrate();
+
+
+
+
+		//Kalman Filter variables.
+		imu::Matrix<3> H = imu::Matrix<3>(); //Transformation Matrix
+		imu::Matrix<3> P = imu::Matrix<3>(); //New estimate.
+		imu::Matrix<3> Q = imu::Matrix<3>(); //Covariance Matrix
 };

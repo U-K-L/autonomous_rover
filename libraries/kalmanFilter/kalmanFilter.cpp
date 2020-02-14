@@ -5,6 +5,15 @@ void kalmanFilter::setup() {
 	orient.setup();
 	//orient.callibrateCompass();
 	calibrate();
+
+	H.vector_to_row(imu::Vector<2>(1, 0), 0);
+	H.vector_to_row(imu::Vector<2>(0, 1), 1);
+
+	P.vector_to_row(imu::Vector<2>(1, 0), 0);
+	P.vector_to_row(imu::Vector<2>(0, 1), 1);
+
+	Q.vector_to_row(imu::Vector<2>(averageCalibration.y(), 0);
+	Q.vector_to_row(imu::Vector<2>(0, averageCalibration.y());
 }
 
 void kalmanFilter::loop() {
@@ -51,9 +60,26 @@ void kalmanFilter::calibrate() {
 	orient.xf = 0;
 	orient.yf = 0;
 	orient.zf = 0;
+
 	orient.averageCalibration.x() = averageCalibration.x();
 	orient.averageCalibration.y() = averageCalibration.y();
 	orient.averageCalibration.z() = averageCalibration.z();
+
+	//Gets the standard deviation.
+	for (int j = 0; j < 250; i++) {
+		orient.calibrate();
+		orient.averageCalibration.x() += pow(orient.acceleration.x() - averageCalibration.x(), 2);
+		orient.averageCalibration.y() += pow(orient.acceleration.y() - averageCalibration.y(), 2);
+		orient.averageCalibration.z() += pow(orient.acceleration.z() - averageCalibration.z(), 2);
+		delay(10);
+	}
+
+	orient.averageCalibration = averageCalibration * (1.0 / i);
+	averageCalibration.x() = sqrt(orient.averageCalibration.x());
+	averageCalibration.y() = sqrt(orient.averageCalibration.y());
+	averageCalibration.z() = sqrt(orient.averageCalibration.z());
+
+
 }
 
 void kalmanFilter::debug() {
