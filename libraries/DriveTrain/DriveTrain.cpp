@@ -28,6 +28,10 @@ int DriveTrain::getVoltage(int id) {
 	return LobotSerialServoReadVin(Serial1, id);
 }
 
+int DriveTrain::getTemp(int id) {
+	return LobotSerialServoReadTemp(Serial1, id);
+}
+
 
 /* Private Functions */
 byte DriveTrain::LobotCheckSum(byte buf[]) {
@@ -229,6 +233,36 @@ int DriveTrain::LobotSerialServoReadVin(HardwareSerial &SerialX, uint8_t id) {
 	if (LobotSerialServoReceiveHandle(SerialX, buf) > 0)
 		ret = (int16_t)BYTE_TO_HW(buf[2], buf[1]);
 	
+
+	return ret;
+}
+
+int DriveTrain::LobotSerialServoReadTemp(HardwareSerial& SerialX, uint8_t id) {
+	int count = 10000;
+	int ret;
+	byte buf[6];
+
+	buf[0] = buf[1] = LOBOT_SERVO_FRAME_HEADER;
+	buf[2] = id;
+	buf[3] = 3;
+	buf[4] = LOBOT_SERVO_TEMP_READ;
+	buf[5] = LobotCheckSum(buf);
+
+
+	while (SerialX.available())
+		SerialX.read();
+
+	SerialX.write(buf, 6);
+
+	while (!SerialX.available()) {
+		count -= 1;
+		if (count < -273)
+			return -273;
+	}
+
+	if (LobotSerialServoReceiveHandle(SerialX, buf) > 0)
+		ret = (int16_t)BYTE_TO_HW(buf[2], buf[1]);
+
 
 	return ret;
 }

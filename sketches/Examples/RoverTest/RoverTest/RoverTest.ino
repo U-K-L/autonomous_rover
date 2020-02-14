@@ -6,6 +6,7 @@ coroutine driveCoroutine;
 coroutine turnCoroutine;
 boolean turnRight = false;
 
+
 void setup() {
   // put your setup code here, to run once:
 
@@ -38,16 +39,50 @@ void loop() {
     Leftspin();
     }
   /*
+  Serial.println("Voltage");
+  Serial.println("FLS");
   Serial.println(drive.getVoltage(23));
+  Serial.println("FLW");
   Serial.println(drive.getVoltage(25));
+  Serial.println("FRS");
   Serial.println(drive.getVoltage(29));
+  Serial.println("FRW");
   Serial.println(drive.getVoltage(27));
+  Serial.println("MLW");
   Serial.println(drive.getVoltage(21));
+  Serial.println("MRW");
   Serial.println(drive.getVoltage(22));
+  Serial.println("BLS");
   Serial.println(drive.getVoltage(24));
+  Serial.println("BLW");
   Serial.println(drive.getVoltage(20));
+  Serial.println("BRS");
   Serial.println(drive.getVoltage(26));
+  Serial.println("BRW");
   Serial.println(drive.getVoltage(28));
+  Serial.println();
+
+  Serial.println("Temperature");
+  Serial.println("FLS");
+  Serial.println(drive.getTemp(23));
+  Serial.println("FLW");
+  Serial.println(drive.getTemp(25));
+  Serial.println("FRS");
+  Serial.println(drive.getTemp(29));
+  Serial.println("FRW");
+  Serial.println(drive.getTemp(27));
+  Serial.println("MLW");
+  Serial.println(drive.getTemp(21));
+  Serial.println("MRW");
+  Serial.println(drive.getTemp(22));
+  Serial.println("BLS");
+  Serial.println(drive.getTemp(24));
+  Serial.println("BLW");
+  Serial.println(drive.getTemp(20));
+  Serial.println("BRS");
+  Serial.println(drive.getTemp(26));
+  Serial.println("BRW");
+  Serial.println(drive.getTemp(28));
   Serial.println();
   */
   delay(10);

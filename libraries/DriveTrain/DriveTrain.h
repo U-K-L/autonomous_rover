@@ -57,6 +57,8 @@ class DriveTrain {
 		
 		// voltage reading
 		int getVoltage(int);
+
+		int getTemp(int);
 		
 	private:
 		byte LobotCheckSum(byte[]);
@@ -78,6 +80,8 @@ class DriveTrain {
 		int LobotSerialServoReadPosition(HardwareSerial&, uint8_t);
 		
 		int LobotSerialServoReadVin(HardwareSerial&, uint8_t);
+
+		int LobotSerialServoReadTemp(HardwareSerial&, uint8_t);
 };
 
 #endif
