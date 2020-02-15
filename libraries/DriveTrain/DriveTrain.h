@@ -36,6 +36,4 @@ class Wheel {
 	State _msState;
 };
 
-
-
 #endif

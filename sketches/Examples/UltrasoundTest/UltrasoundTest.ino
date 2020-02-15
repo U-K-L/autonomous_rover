@@ -1,41 +1,51 @@
 #include <DriveTrain.h> //Deals with spinning the wheels of the rover.
 #include "coroutine.h"
 #include <kalmanFilter.h>
-kalmanFilter kalman;
+#include <echo.h>
+//kalmanFilter kalman;
+orientation orient;
 DriveTrain drive;
+echo echo;
 coroutine driveCoroutine;
-coroutine serialCoroutine;
-
+float rposx = -99999;
+float rposy = -99999;
+float rposz = -99999;
+boolean moveback = false;
 void setup() {
   // put your setup code here, to run once:
   driveCoroutine.setup(1000);
-  serialCoroutine.setup(2000);
   drive.setup();
-  kalman.setup();
+  orient.setup();
+  echo.setup();
   Serial.begin(9600);
-  delay(1000);
   reset();
 }
 
 void loop() {
-  kalman.loop();
-  serialCoroutine.loop();
-  if(serialCoroutine.readyState){
-    kalman.orient.serialize();
-    serialCoroutine.reset();
-  }
-  reset();
+  orient.loop();
+  echo.loop();
   
-  // put your main code here, to run repeatedly:
-  //Rightspin();
-  delay(10);
-
-  if(kalman.orient.position.y() > 1.5){
-    forwards(0);
-    reset();
-  }else{
-      forwards(90);
+  if (!moveback)
+  {
+    forwards(100);
   }
+  else
+  {
+    forwards(-100);
+  }
+
+  if (echo.distance < 1)
+  {
+    moveback = true;
+    rposx = orient.position.x();
+    rposy = orient.position.y();
+    rposz = orient.position.z();
+  }
+  while (!(abs(sqrt(rposx*rposx+rposy*rposy+rposz*rposz) - orient.computeMagnitude()) < 1))
+  {
+    moveback = false;
+  }
+  delay(10);
 }
 
 void forwards(int speed) {

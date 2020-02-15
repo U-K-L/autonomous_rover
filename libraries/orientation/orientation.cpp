@@ -151,14 +151,6 @@ void orientation::trapezoidalIntegration() {
 	if (abs(acceleration.z()) < tolerance) {
 		velocity.z() = 0;
 	}
-	Serial.println(velocity.x());
-	Serial.println(position.x());
-	Serial.println(velocity.y());
-	Serial.println(position.y());
-	Serial.println(velocity.z());
-	Serial.println(position.z());
-	Serial.println();
-	
 	
 	float basepositionx = position.x();
 	float basepositiony = position.y();
@@ -184,9 +176,17 @@ void orientation::trapezoidalIntegration() {
 	velocity.y() = basevelocityy + baseaccelerationy + ((accelerationy - baseaccelerationy) / 2);
 	velocity.z() = basevelocityz + baseaccelerationz + ((accelerationz - baseaccelerationz) / 2);
 
+	velocity.x() *= 0.01;
+	velocity.y() *= 0.01;
+	velocity.z() *= 0.01;
+
 	position.x() = basepositionx + basevelocityx + ((abs(velocity.x()) - basevelocityx) / 2);
 	position.y() = basepositiony + basevelocityy + ((abs(velocity.y()) - basevelocityy) / 2);
 	position.z() = basepositionz + basevelocityz + ((abs(velocity.z()) - basevelocityz) / 2);
+
+	position.x() *= 0.01;
+	position.x() *= 0.01;
+	position.x() *= 0.01;
 
 }
 
@@ -199,10 +199,15 @@ void orientation::IIRFilter(double x, double y, double z) {
 }
 
 String orientation::serialize() {
-	double x = acceleration.x();
-	double y = acceleration.y();
-	double z = acceleration.z();
+	double x = position.x();
+	double y = position.y();
+	double z = position.z();
 	String value = (String)"roverP" + String(x, 6) + "," + String(y, 6) + "," + String(z, 6);
+	Serial.println(value);
+	x = velocity.x();
+	y = velocity.y();
+	z = velocity.z();
+	value = (String)"roverV" + String(x, 6) + "," + String(y, 6) + "," + String(z, 6);
 	Serial.println(value);
 	x = quaternion.x();
 	y = quaternion.y();

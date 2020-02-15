@@ -6,8 +6,6 @@ Wheel::Wheel(byte id, State type) {
 	_msState = type;
 }
 
-void Wheel::forward(float speed) {
-	Driver::spinAt(_id, speed);
 }
 
 void Wheel::backward(float speed) {
