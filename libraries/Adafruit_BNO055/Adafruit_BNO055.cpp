@@ -343,6 +343,8 @@ void Adafruit_BNO055::getRevInfo(adafruit_bno055_rev_info_t *info) {
 void Adafruit_BNO055::getCalibration(uint8_t *sys, uint8_t *gyro,
                                      uint8_t *accel, uint8_t *mag) {
   uint8_t calData = read8(BNO055_CALIB_STAT_ADDR);
+  //Serial.println(calData);
+  //calData = 192; //192 is when system is done
   if (sys != NULL) {
     *sys = (calData >> 6) & 0x03;
   }
