@@ -138,9 +138,9 @@ float orientation::computeMagnitude() {
 
 }
 
+//Trapezoidal double integration to compute position and velocity from accelerometer.
+//Delta time is 0.01 since we take a sample every 10 miliseconds.
 void orientation::trapezoidalIntegration() {
-
-	float tolerance = 0.03;
 
 	if (abs(acceleration.x()) < tolerance) {
 		velocity.x() = 0;

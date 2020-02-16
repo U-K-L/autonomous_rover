@@ -53,6 +53,7 @@ double RoverGPS::calculateBearing(double latStart, double lonStart, double latDe
 	return bearing;
 }
 
+//Calculates using haversine formula.
 double RoverGPS::calculateDistance(double latStart, double lonStart, double latDest, double lonDest) {
 
 

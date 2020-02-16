@@ -12,8 +12,8 @@ void kalmanFilter::setup() {
 	P.vector_to_row(imu::Vector<2>(1, 0), 0);
 	P.vector_to_row(imu::Vector<2>(0, 1), 1);
 
-	Q.vector_to_row(imu::Vector<2>(averageCalibration.y(), 0);
-	Q.vector_to_row(imu::Vector<2>(0, averageCalibration.y());
+	Q.vector_to_row(imu::Vector<2>(averageCalibration.y(), 0),0);
+	Q.vector_to_row(imu::Vector<2>(0, averageCalibration.y()),1);
 	//roverGPS.destination.x() = 0;
 	//roverGPS.destination.y() = 0;
 }
@@ -85,7 +85,7 @@ void kalmanFilter::debug() {
 	Serial.println(orient.position.z());
 }
 
-void kalmanFilter serialize(){
+void kalmanFilter::serialize(){
 	orient.serialize();
 	roverGPS.serialize();
 }

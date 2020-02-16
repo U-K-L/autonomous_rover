@@ -26,6 +26,7 @@ public:
 	double filterStrength = 8.25; //Filter calibration Strength.
 	double xf, yf, zf;
 	float ax, ay, az;
+	float tolerance = 0.03; //Tolerance value for accelerometer sensitivity.
 	orientation() {};
 	void setup();
 	void loop();
