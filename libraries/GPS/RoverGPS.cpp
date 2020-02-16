@@ -25,17 +25,17 @@ void RoverGPS::loop() {
 	// if millis() or timer wraps around, we'll just reset it
 	if (timer > millis()) timer = millis();
 
-	// approximately every 2 seconds or so, print out the current stats
-	if (millis() - timer > 2000) {
+	// approximately every 1 seconds or so, print out the current stats
+	if (millis() - timer > 1000) {
 		timer = millis(); // reset the timer
 		if (gps.fix) {
-			serialize();
-			position.x() = gps.latitude;
-			position.y() = gps.longitude;
+
+			position.x() = gps.longitudeDegrees;//gps.latitude;
+			position.y() = gps.latitudeDegrees;//gps.longitude;
 			speed = gps.speed;
 		}
 
-		calculateBearing(position.x(), position.y(), destination.x(), destination.y()); //Recalculates every 2 seconds.
+		calculateBearing(position.x(), position.y(), destination.x(), destination.y()); //Recalculates every 1 seconds.
 	}
 
 	
@@ -46,33 +46,43 @@ double RoverGPS::calculateBearing(double latStart, double lonStart, double latDe
 	latDest = toRadians(latDest);
 	lonStart = toRadians(lonStart);
 	lonDest = toRadians(lonDest);
-	double y = sinf(lonDest - lonStart)*cosf(latDest);
-	double x = cosf(latStart)*sinf(latDest) - sinf(latStart)*cosf(latDest)*cosf(lonDest-lonStart);
+	double y = sin(lonDest - lonStart)*cos(latDest);
+	double x = cos(latStart)*sin(latDest) - sin(latStart)*cos(latDest)*cos(lonDest-lonStart);
 	double bear = toDegrees(atan2(y, x));
-	bearing = fmodf((360 + bear + correction), 360.00); //ensures that degree is between 0 and 360 just like heading.
+	bearing = fmodf((360 + bear), 360.00); //ensures that degree is between 0 and 360 just like heading.
 	return bearing;
 }
 
 double RoverGPS::calculateDistance(double latStart, double lonStart, double latDest, double lonDest) {
+
+
 	latStart = toRadians(latStart);
-	latDest = toRadians(latDest);
 	lonStart = toRadians(lonStart);
+
+	latDest = toRadians(latDest);
 	lonDest = toRadians(lonDest);
 
-	double deltaLat = toRadians(latDest - latStart);
-	double deltaLon = toRadians(lonDest - lonStart);
+	double phiStart = latStart;
+	double phiDest = latDest;
 
-	double alpha = sinf(deltaLat / 2)*sinf(deltaLat / 2)+
-				   cosf(latStart)*cosf(latDest)*
-				   sinf(deltaLon / 2)*sinf(deltaLon / 2);
+	double deltaLat = (latDest - latStart);
+	double deltaLon = (lonDest - lonStart);
 
-	double c = 2 * asinf(sqrtf(alpha));
-	distance = (EarthRadius) * c;
-	distance *= 100000;
+
+	double alpha = sin(deltaLat / 2)*sin(deltaLat / 2)+
+				   
+				   cos(phiStart)*cos(phiDest)*
+				   
+				   sin(deltaLon / 2)*sin(deltaLon / 2);
+
+	double c = 2 * atan2(sqrt(alpha), sqrt(1-alpha));
+	distance = (EarthRadius * c)*1000;
 	return distance;
 }
 
 void RoverGPS::serialize() {
-	String value = (String)"GPS_ROVER " + String(gps.latitude, 8) + "," + String(gps.longitude, 8);
+	String value = (String)"GPS_ROVER" + String(position.y(), 8) + "," + String(position.x(), 8);
 	Serial.println(value);
+	Serial.print("GPS_SPEED");
+	Serial.println(speed);
 }

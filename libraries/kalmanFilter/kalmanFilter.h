@@ -15,6 +15,7 @@ class kalmanFilter {
 		void setup();
 		void debug();
 		void calibrate();
+		void serialize();
 
 
 

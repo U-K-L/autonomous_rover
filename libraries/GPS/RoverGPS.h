@@ -15,7 +15,7 @@ public:
 	double distance; //Distance in meters between two points.
 	uint32_t timer = millis();
 	double speed;
-	double EarthRadius = 6371; //Mean earth radius Kilometers.
+	double EarthRadius = 6373; //Mean earth radius Kilometers.
 	double correction = 95.87;
 	RoverGPS(){};
 	void setup();

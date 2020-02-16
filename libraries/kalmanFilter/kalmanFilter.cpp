@@ -14,35 +14,13 @@ void kalmanFilter::setup() {
 
 	Q.vector_to_row(imu::Vector<2>(averageCalibration.y(), 0);
 	Q.vector_to_row(imu::Vector<2>(0, averageCalibration.y());
+	//roverGPS.destination.x() = 0;
+	//roverGPS.destination.y() = 0;
 }
 
 void kalmanFilter::loop() {
 	orient.loop();
-	/*
 	roverGPS.loop();
-	roverGPS.destination.x() = 0;
-	roverGPS.destination.y() = 0;
-	//X is latitude.
-	//Y is longitude.
-	//Latitude is East/West.
-	//Longitude is North/South.
-	roverGPS.position.y() = 40.176335;
-	roverGPS.position.x() =   -75.275412;
-	
-	roverGPS.destination.y() = 40.176548;
-	roverGPS.destination.x() =  -75.276715;
-
-	roverGPS.calculateBearing(roverGPS.position.x(), roverGPS.position.y(),
-							  roverGPS.destination.x(), roverGPS.destination.y() );
-
-	roverGPS.calculateDistance(roverGPS.position.x(), roverGPS.position.y(),
-								roverGPS.destination.x(), roverGPS.destination.y() );
-
-	//orient.serialize();
-	debug();
-	*/
-	//orient.serialize();
-	//Serial.println(orient.computeMagnitude());
 }
 
 void kalmanFilter::calibrate() {
@@ -105,4 +83,9 @@ void kalmanFilter::debug() {
 	Serial.println(orient.position.x());
 	Serial.println(orient.position.y());
 	Serial.println(orient.position.z());
+}
+
+void kalmanFilter serialize(){
+	orient.serialize();
+	roverGPS.serialize();
 }
