@@ -32,9 +32,6 @@ void orientation::loop() {
 	az = acceleration.z();
 	computeAcceleration(&accel);
 	trapezoidalIntegration();
-	//computeVelocity();
-	//computePosition();
-	//computeMagnitude();
 }
 
 void orientation::calibrate() {
@@ -101,45 +98,22 @@ void orientation::computeAcceleration(sensors_event_t * event) {
 }
 
 void orientation::computeVelocity() {
-
-	
-	/*
 	//Use Euler integration to compute velocity.
 	velocity.x() += acceleration.x();
 	velocity.y() += acceleration.y();
 	velocity.z() += acceleration.z();
-	*/
+	velocity = velocity*0.01;
 }
 
 void orientation::computePosition() {
 	//Use Euler integration to compute position.
-	float tol = 0.0001f;
 	position.x() += velocity.x();
 	position.y() += velocity.y();
 	position.z() += velocity.z();
-}
-
-
-float orientation::computeMagnitude() {
-	//Use Euler integration to compute position.
-
-
-	position.x() += velocity.x();
-	position.y() += velocity.y();
-	position.z() += velocity.z();
-	float x = position.x();
-	float y = position.y();
-	float z = position.z();
-
-	float magnitude = 0;
-
-	magnitude = sqrt(x*x + y*y + z*z);
-	return magnitude;
-
 }
 
 //Trapezoidal double integration to compute position and velocity from accelerometer.
-//Delta time is 0.01 since we take a sample every 10 miliseconds.
+//Delta time is 0.1 since we take a sample every 100 miliseconds.
 void orientation::trapezoidalIntegration() {
 
 	float basevelocityx = abs(velocity.x());
@@ -160,9 +134,7 @@ void orientation::trapezoidalIntegration() {
 	velocity.y() = basevelocityy + baseaccelerationy + ((accelerationy - baseaccelerationy) / 2);
 	velocity.z() = basevelocityz + baseaccelerationz + ((accelerationz - baseaccelerationz) / 2);
 
-	velocity.x() *= 0.01;
-	velocity.y() *= 0.01;
-	velocity.z() *= 0.01;
+	velocity = velocity* 0.1;//Delta time.
 
 
 	
@@ -179,9 +151,23 @@ void orientation::trapezoidalIntegration() {
 		basevelocityz = 0;
 	}
 
-	position.x() = position.x() + basevelocityx + ((abs(velocity.x()) - basevelocityx) / 2);
-	position.y() = position.y() + basevelocityy + ((abs(velocity.y()) - basevelocityy) / 2);
+	float forceX = basevelocityx + ((abs(velocity.x()) - basevelocityx) / 2);
+	float forceY = basevelocityy + ((abs(velocity.y()) - basevelocityy) / 2);
+
+	//position.x() = position.x() + basevelocityx + ((abs(velocity.x()) - basevelocityx) / 2);
+	//position.y() = position.y() + basevelocityy + ((abs(velocity.y()) - basevelocityy) / 2);
+
 	position.z() = position.z() + basevelocityz + ((abs(velocity.z()) - basevelocityz) / 2);
+	applyForwardsForce(forceX+forceY);
+}
+
+
+//Applys linear acceleration according to the orientation of the rover using the Hamilton Product.
+void orientation::applyForwardsForce(double f){
+	imu::Vector<3> forwards = imu::Vector<3>(0, 1, 0); //The forwards vector, representing the Y plane going forward.
+	forwardsVector = quaternion.rotateVector(forwards);//Performs the hamilton product using cross products.
+
+	position = position+(forwardsVector*f);
 }
 
 //Infinite Impulse Response
@@ -193,34 +179,49 @@ void orientation::IIRFilter(double x, double y, double z) {
 }
 
 String orientation::serialize() {
-	double x = position.x();
-	double y = position.y();
-	double z = position.z();
-	String value = (String)"roverP" + String(x, 6) + "," + String(y, 6) + "," + String(z, 6);
-	Serial.println(value);
-	x = quaternion.x();
-	y = quaternion.y();
-	z = quaternion.z();
+
+	double x = quaternion.x();
+	double y = quaternion.y();
+	double z = quaternion.z();
 	double w = quaternion.w();
-	value = (String)"roverQ" + String(x, 6) + "," + String(y, 6) + "," + String(z, 6) + "," + String(w, 6);
+	String value = (String)"roverQ" + String(x, 6) + "," + String(y, 6) + "," + String(z, 6) + "," + String(w, 6);
 	Serial.println(value);
 
+	x = forwardsVector.x();
+	y = forwardsVector.y();
+	z = forwardsVector.z();
+	value = (String)"roverF" + String(x, 6) + "," + String(y, 6) + "," + String(z, 6);
+	Serial.println(value);
+	 x = position.x();
+	 y = position.y();
+	 z = position.z();
+	value = (String)"roverP" + String(x, 6) + "," + String(y, 6) + "," + String(z, 6);
+	Serial.println(value);
+
+
+		/*
+
 	//Additional Serializations
+
 	x = velocity.x();
 	y = velocity.y();
 	z = velocity.z();
 	value = (String)"roverV" + String(x, 6) + "," + String(y, 6) + "," + String(z, 6);
 	Serial.println(value);
+	
 	x = acceleration.x();
 	y = acceleration.y();
 	z = acceleration.z();
 	value = (String)"roverA" + String(x, 6) + "," + String(y, 6) + "," + String(z, 6);
 	Serial.println(value);
+
 	x = averageCalibration.x();
 	y = averageCalibration.y();
 	z = averageCalibration.z();
 	//Calibration Values
 	value = (String)"roverC" + String(x, 6) + "," + String(y, 6) + "," + String(z, 6);
 	Serial.println(value);
+
+	*/
 	return value;
 }

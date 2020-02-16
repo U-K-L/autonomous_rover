@@ -1,3 +1,4 @@
+#define BNO055_SAMPLERATE_DELAY_MS (100)
 #include <kalmanFilter.h>
 #include <coroutine.h>
 kalmanFilter kalman;
@@ -12,11 +13,13 @@ void setup() {
 void loop() {
   // put your main code here, to run repeatedly:
   kalman.loop();
+  /*
   serialCoroutine.loop();
   if(serialCoroutine.readyState){
      kalman.serialize();
      serialCoroutine.reset(); 
   }
-
-  delay(10);
+  */
+  kalman.serialize();
+  delay(BNO055_SAMPLERATE_DELAY_MS);
 }
