@@ -5,7 +5,6 @@ void kalmanFilter::setup() {
 	orient.setup();
 	//orient.callibrateCompass();
 	calibrate();
-
 	H.vector_to_row(imu::Vector<2>(1, 0), 0);
 	H.vector_to_row(imu::Vector<2>(0, 1), 1);
 
@@ -14,20 +13,17 @@ void kalmanFilter::setup() {
 
 	Q.vector_to_row(imu::Vector<2>(averageCalibration.y(), 0),0);
 	Q.vector_to_row(imu::Vector<2>(0, averageCalibration.y()),1);
-	//roverGPS.destination.x() = 0;
-	//roverGPS.destination.y() = 0;
 }
 
 void kalmanFilter::loop() {
 	orient.loop();
-	roverGPS.loop();
+	//roverGPS.loop();
 }
 
 void kalmanFilter::calibrate() {
 	int i = 0;
 	for (; i < 250; i++) {
 		orient.calibrate();
-		//roverGPS.loop();
 
 		averageCalibration.x() += abs(orient.acceleration.x());
 		averageCalibration.y() += abs(orient.acceleration.y());
@@ -44,18 +40,23 @@ void kalmanFilter::calibrate() {
 	orient.averageCalibration.z() = averageCalibration.z();
 
 	//Gets the standard deviation.
-	for (int j = 0; j < 250; i++) {
+	float x = 0;
+	float y = 0;
+	float z = 0;
+	for (int j = 0; j < 250; j++) {
 		orient.calibrate();
-		orient.averageCalibration.x() += pow(orient.acceleration.x() - averageCalibration.x(), 2);
-		orient.averageCalibration.y() += pow(orient.acceleration.y() - averageCalibration.y(), 2);
-		orient.averageCalibration.z() += pow(orient.acceleration.z() - averageCalibration.z(), 2);
+		x += pow(orient.acceleration.x() - averageCalibration.x(), 2);
+		y += pow(orient.acceleration.y() - averageCalibration.y(), 2);
+		z += pow(orient.acceleration.z() - averageCalibration.z(), 2);
 		delay(10);
 	}
 
-	orient.averageCalibration = averageCalibration * (1.0 / i);
-	averageCalibration.x() = sqrt(orient.averageCalibration.x());
-	averageCalibration.y() = sqrt(orient.averageCalibration.y());
-	averageCalibration.z() = sqrt(orient.averageCalibration.z());
+	x *= (1.0 / i);
+	y *= (1.0 / i);
+	z *= (1.0 / i);
+	averageCalibration.x() = sqrt(x);
+	averageCalibration.y() = sqrt(y);
+	averageCalibration.z() = sqrt(z);
 
 
 }
@@ -87,5 +88,5 @@ void kalmanFilter::debug() {
 
 void kalmanFilter::serialize(){
 	orient.serialize();
-	roverGPS.serialize();
+	//roverGPS.serialize();
 }

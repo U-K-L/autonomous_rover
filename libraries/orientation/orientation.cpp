@@ -142,22 +142,6 @@ float orientation::computeMagnitude() {
 //Delta time is 0.01 since we take a sample every 10 miliseconds.
 void orientation::trapezoidalIntegration() {
 
-	if (abs(acceleration.x()) < tolerance) {
-		velocity.x() = 0;
-	}
-	if (abs(acceleration.y()) < tolerance) {
-		velocity.y() = 0;
-	}
-	if (abs(acceleration.z()) < tolerance) {
-		velocity.z() = 0;
-	}
-	
-	float basepositionx = position.x();
-	float basepositiony = position.y();
-	float basepositionz = position.z();
-
-
-
 	float basevelocityx = abs(velocity.x());
 	float basevelocityy = abs(velocity.y());
 	float basevelocityz = abs(velocity.z());
@@ -166,9 +150,9 @@ void orientation::trapezoidalIntegration() {
 	float baseaccelerationy = ay;
 	float baseaccelerationz = az;
 
-	float accelerationx = acceleration.x();
-	float accelerationy = acceleration.y();
-	float accelerationz = acceleration.z();
+	float accelerationx = abs(acceleration.x());
+	float accelerationy = abs(acceleration.y());
+	float accelerationz = abs(acceleration.z());
 
 	
 	
@@ -180,14 +164,24 @@ void orientation::trapezoidalIntegration() {
 	velocity.y() *= 0.01;
 	velocity.z() *= 0.01;
 
-	position.x() = basepositionx + basevelocityx + ((abs(velocity.x()) - basevelocityx) / 2);
-	position.y() = basepositiony + basevelocityy + ((abs(velocity.y()) - basevelocityy) / 2);
-	position.z() = basepositionz + basevelocityz + ((abs(velocity.z()) - basevelocityz) / 2);
 
-	position.x() *= 0.01;
-	position.x() *= 0.01;
-	position.x() *= 0.01;
+	
+	if (abs(acceleration.x()) < tolerance) {
+		velocity.x() = 0;
+		basevelocityx = 0;
+	}
+	if (abs(acceleration.y()) < tolerance) {
+		velocity.y() = 0;
+		basevelocityy = 0;
+	}
+	if (abs(acceleration.z()) < tolerance) {
+		velocity.z() = 0;
+		basevelocityz = 0;
+	}
 
+	position.x() = position.x() + basevelocityx + ((abs(velocity.x()) - basevelocityx) / 2);
+	position.y() = position.y() + basevelocityy + ((abs(velocity.y()) - basevelocityy) / 2);
+	position.z() = position.z() + basevelocityz + ((abs(velocity.z()) - basevelocityz) / 2);
 }
 
 //Infinite Impulse Response
@@ -204,16 +198,29 @@ String orientation::serialize() {
 	double z = position.z();
 	String value = (String)"roverP" + String(x, 6) + "," + String(y, 6) + "," + String(z, 6);
 	Serial.println(value);
-	x = velocity.x();
-	y = velocity.y();
-	z = velocity.z();
-	value = (String)"roverV" + String(x, 6) + "," + String(y, 6) + "," + String(z, 6);
-	Serial.println(value);
 	x = quaternion.x();
 	y = quaternion.y();
 	z = quaternion.z();
 	double w = quaternion.w();
 	value = (String)"roverQ" + String(x, 6) + "," + String(y, 6) + "," + String(z, 6) + "," + String(w, 6);
+	Serial.println(value);
+
+	//Additional Serializations
+	x = velocity.x();
+	y = velocity.y();
+	z = velocity.z();
+	value = (String)"roverV" + String(x, 6) + "," + String(y, 6) + "," + String(z, 6);
+	Serial.println(value);
+	x = acceleration.x();
+	y = acceleration.y();
+	z = acceleration.z();
+	value = (String)"roverA" + String(x, 6) + "," + String(y, 6) + "," + String(z, 6);
+	Serial.println(value);
+	x = averageCalibration.x();
+	y = averageCalibration.y();
+	z = averageCalibration.z();
+	//Calibration Values
+	value = (String)"roverC" + String(x, 6) + "," + String(y, 6) + "," + String(z, 6);
 	Serial.println(value);
 	return value;
 }
