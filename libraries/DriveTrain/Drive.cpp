@@ -1,8 +1,10 @@
 #include "Drive.h"
 
+//#define Serial1 Serial2
+
 /* Helper Functions */
 void Driver::setup() {
-	Serial1.begin(115200);
+	Serial2.begin(115200);
 }
 
 void Driver::moveTo(int servoId, float destination) {
@@ -11,21 +13,21 @@ void Driver::moveTo(int servoId, float destination) {
 
 	// Output to LewanSoul API is from 0 to 1000, with 500 as center.
 	// Interpreted as movement from -120 to 120 degrees.
-	LobotSerialServoMove(Serial1, servoId, (destination * (500.0/120.0))+500, 200);
+	LobotSerialServoMove(Serial2, servoId, (destination * (500.0/120.0))+500, 200);
 }
 
 void Driver::spinAt(int servoId, float velocity) {
 	// Input should be from -100 to 100, so multiply by 10 to get
 	// the -1000 to 1000 range desired by LewanSoul API
-	LobotSerialServoSetMode(Serial1, servoId, 1, velocity * 10);
+	LobotSerialServoSetMode(Serial2, servoId, 1, velocity * 10);
 }
 
 int Driver::positionRead(int id) {
-	return LobotSerialServoReadPosition(Serial1, id);
+	return LobotSerialServoReadPosition(Serial2, id);
 }
 
 int Driver::getVoltage(int id) {
-	return LobotSerialServoReadVin(Serial1, id);
+	return LobotSerialServoReadVin(Serial2, id);
 }
 
 

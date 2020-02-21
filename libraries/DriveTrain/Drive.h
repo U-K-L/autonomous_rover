@@ -2,6 +2,7 @@
 #define _Drive_h
 
 #include "arduino.h"
+#include "MultiSerial.h"
 
 /* Macro functions */
 #define GET_LOW_BYTE(A) (uint8_t)((A))								//Macro function  get lower 8 bits of A
@@ -40,9 +41,15 @@
 #define LOBOT_SERVO_LED_CTRL_READ        34
 #define LOBOT_SERVO_LED_ERROR_WRITE      35
 #define LOBOT_SERVO_LED_ERROR_READ       36
+ 
+#define PIN_SERIAL2_RX 15  // PA05
+#define PAD_SERIAL2_RX (SERCOM_RX_PAD_1)
+#define PIN_SERIAL2_TX 14  // PA04
+#define PAD_SERIAL2_TX (UART_TX_PAD_0)
 
 
 namespace Driver {
+	
 	void setup();
 
 	// Helper Functions
@@ -85,7 +92,6 @@ namespace Driver {
 	int LobotSerialServoReadPosition(HardwareSerial&, uint8_t);
 
 	int LobotSerialServoReadVin(HardwareSerial&, uint8_t);
-
 	/******************************************************************************/
 }
 

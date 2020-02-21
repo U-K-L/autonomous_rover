@@ -73,6 +73,35 @@ void orientation::computeCompass(sensors_event_t * event) {
 	incline = -toDegrees(quaternion.toEuler().z());
 }
 
+void orientation::computeAngle() {
+	double x, y, z;
+	orientationG.x() = 0;
+	orientationG.y() = 0;
+	orientationG.z() = 0;
+	sensors_event_t event;
+	
+	bno.getEvent(&event);
+	
+	x = event.orientation.x;
+	y = event.orientation.y;
+	z = event.orientation.z;
+	
+	orientationG.x() = x;
+	orientationG.y() = y;
+	orientationG.z() = z;
+	
+	#ifdef DEBUG
+	Serial.println("");
+	Serial.println("Angle: ");
+	Serial.print(orientationG.x());
+	Serial.print(" ");
+	Serial.print(orientationG.y());
+	Serial.print(" ");
+	Serial.print(orientationG.z());
+	Serial.println("");
+	#endif
+}
+
 void orientation::computeAcceleration(sensors_event_t * event) {
 	double x, y, z;
 	acceleration.x() = 0;
